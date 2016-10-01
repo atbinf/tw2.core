@@ -678,7 +678,7 @@ class CompoundWidget(Widget):
         for c in (child for child in self.children if not child._sub_compound):
             d = value.get(c.key, '')
             try:
-                val = c._validate(d, state)
+                val = c._validate(d, data)
                 if val is not vd.EmptyField:
                     data[c.key] = val
             except vd.catch as e:
@@ -865,7 +865,10 @@ class RepeatingWidget(Widget):
         data = []
         for i, v in enumerate(value):
             try:
-                data.append(self.children[i]._validate(v, data))
+                if i==0 and v is None:
+                    data.append(v)
+                else:
+                    data.append(self.children[i]._validate(v, data))
             except vd.catch:
                 data.append(vd.Invalid)
                 any_errors = True
