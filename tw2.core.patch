@@ -1,0 +1,23 @@
+--- lib/python2.7/site-packages/tw2/core/widgets.py	2014-07-21 15:57:03.656201118 +0000
++++ lib/python2.7/site-packages/tw2/core/widgets.py	2014-07-21 16:14:53.740153214 +0000
+@@ -678,7 +678,7 @@
+         for c in (child for child in self.children if not child._sub_compound):
+             d = value.get(c.key, '')
+             try:
+-                val = c._validate(d, state)
++                val = c._validate(d, data)
+                 if val is not vd.EmptyField:
+                     data[c.key] = val
+             except vd.catch as e:
+@@ -865,7 +865,10 @@
+         data = []
+         for i, v in enumerate(value):
+             try:
+-                data.append(self.children[i]._validate(v, data))
++                if i==0 and v is None:
++                    data.append(v)
++                else:
++                    data.append(self.children[i]._validate(v, data))
+             except vd.catch:
+                 data.append(vd.Invalid)
+                 any_errors = True
