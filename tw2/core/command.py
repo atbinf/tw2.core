@@ -21,7 +21,7 @@ except ImportError:
     import md5
 
 try:
-    from cStringIO import StringIO
+    from io import StringIO
 except ImportError:
     from six import StringIO
 
